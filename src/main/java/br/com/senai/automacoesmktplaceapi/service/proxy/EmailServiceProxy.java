@@ -3,7 +3,6 @@ package br.com.senai.automacoesmktplaceapi.service.proxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -33,9 +32,8 @@ public class EmailServiceProxy implements EmailService{
 		Notificacao notificacaoSalva = notificacaoService.inserir(notificacao);
 		
 		try {
-			MimeMessage email = mailSender.createMimeMessage();		
-			email.addHeader("Content-Ttpe", "text/html; UTF-8");
-			MimeMessageHelper helper = new MimeMessageHelper(email);			
+			MimeMessage email = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(email, "UTF-8");			
 			helper.setTo(notificacao.getDestinatario());
 			helper.setSubject(notificacao.getTitulo());
 			helper.setText(notificacao.getMensagem());
