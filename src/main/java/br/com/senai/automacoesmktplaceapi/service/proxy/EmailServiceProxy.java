@@ -35,9 +35,9 @@ public class EmailServiceProxy implements EmailService{
 		email.setFrom(remetente);
 		email.setTo(notificacao.getDestinatario());
 		email.setSubject(new String(notificacao.getTitulo().getBytes(), 
-				StandardCharsets.ISO_8859_1));
+				StandardCharsets.UTF_8));
 		email.setText(new String(notificacao.getMensagem().getBytes(), 
-				StandardCharsets.ISO_8859_1));
+				StandardCharsets.UTF_8));
 		this.mailSender.send(email);
 		
 		return notificacaoSalva;
