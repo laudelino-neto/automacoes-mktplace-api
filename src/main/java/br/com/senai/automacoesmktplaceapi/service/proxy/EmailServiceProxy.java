@@ -1,12 +1,11 @@
 package br.com.senai.automacoesmktplaceapi.service.proxy;
 
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import br.com.senai.automacoesmktplaceapi.entity.Notificacao;
@@ -33,20 +32,17 @@ public class EmailServiceProxy implements EmailService{
 		
 		Notificacao notificacaoSalva = notificacaoService.inserir(notificacao);
 		
-		SimpleMailMessage email = new SimpleMailMessage();		
-		email.setFrom(remetente);
-		email.setTo(notificacao.getDestinatario());
-		email.setSubject(notificacao.getTitulo());
-		email.setText(notificacao.getMensagem());
-		
-		MimeMessage mm = mailSender.createMimeMessage();
 		try {
-			mm.addHeader("Content-Type", "text/html; charset=UTF-8");			
+			MimeMessage email = mailSender.createMimeMessage();		
+			email.addHeader("Content-Ttpe", "text/html; UTF-8");
+			MimeMessageHelper helper = new MimeMessageHelper(email);			
+			helper.setTo(notificacao.getDestinatario());
+			helper.setSubject(notificacao.getTitulo());
+			helper.setText(notificacao.getMensagem());
+			this.mailSender.send(email);
 		} catch (MessagingException e) {
 			e.printStackTrace();
-		}
-		
-		this.mailSender.send(email);
+		}			
 		
 		return notificacaoSalva;
 		
