@@ -37,7 +37,7 @@ public class EmailServiceProxy implements EmailService{
 			MimeMessageHelper helper = new MimeMessageHelper(email, "UTF-8");
 			helper.setTo(notificacao.getDestinatario());
 			helper.setSubject(notificacao.getTitulo());
-			helper.setText(notificacao.getMensagem());
+			helper.setText(notificacao.getMensagem(), true);
 			this.mailSender.send(email);
 		} catch (MessagingException e) {
 			e.printStackTrace();
