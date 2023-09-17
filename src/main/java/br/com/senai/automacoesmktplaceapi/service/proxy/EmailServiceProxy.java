@@ -1,5 +1,7 @@
 package br.com.senai.automacoesmktplaceapi.service.proxy;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +34,10 @@ public class EmailServiceProxy implements EmailService{
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setFrom(remetente);
 		email.setTo(notificacao.getDestinatario());
-		email.setSubject(notificacao.getTitulo());
-		email.setText(notificacao.getMensagem());
+		email.setSubject(new String(notificacao.getTitulo().getBytes(), 
+				StandardCharsets.ISO_8859_1));
+		email.setText(new String(notificacao.getMensagem().getBytes(), 
+				StandardCharsets.ISO_8859_1));
 		this.mailSender.send(email);
 		
 		return notificacaoSalva;
