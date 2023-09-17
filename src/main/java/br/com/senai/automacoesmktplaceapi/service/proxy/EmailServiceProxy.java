@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import br.com.senai.automacoesmktplaceapi.entity.Notificacao;
 import br.com.senai.automacoesmktplaceapi.service.EmailService;
 import br.com.senai.automacoesmktplaceapi.service.NotificacaoService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceProxy implements EmailService{
@@ -31,13 +33,19 @@ public class EmailServiceProxy implements EmailService{
 		
 		Notificacao notificacaoSalva = notificacaoService.inserir(notificacao);
 		
-		SimpleMailMessage email = new SimpleMailMessage();
+		SimpleMailMessage email = new SimpleMailMessage();		
 		email.setFrom(remetente);
 		email.setTo(notificacao.getDestinatario());
-		email.setSubject(new String(notificacao.getTitulo().getBytes(), 
-				StandardCharsets.UTF_8));
-		email.setText(new String(notificacao.getMensagem().getBytes(), 
-				StandardCharsets.UTF_8));
+		email.setSubject(notificacao.getTitulo());
+		email.setText(notificacao.getMensagem());
+		
+		MimeMessage mm = mailSender.createMimeMessage();
+		try {
+			mm.addHeader("Content-Type", "text/html; charset=UTF-8");			
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
 		this.mailSender.send(email);
 		
 		return notificacaoSalva;
