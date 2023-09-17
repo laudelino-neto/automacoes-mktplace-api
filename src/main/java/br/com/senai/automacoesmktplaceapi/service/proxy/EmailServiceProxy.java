@@ -33,6 +33,7 @@ public class EmailServiceProxy implements EmailService{
 		
 		try {
 			MimeMessage email = mailSender.createMimeMessage();
+			email.addHeader("Content-type", "text/HTML; charset=UTF-8");
 			MimeMessageHelper helper = new MimeMessageHelper(email, "UTF-8");			
 			helper.setTo(notificacao.getDestinatario());
 			helper.setSubject(notificacao.getTitulo());
