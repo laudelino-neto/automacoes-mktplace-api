@@ -41,12 +41,20 @@ public class AutomacaoServiceImpl implements AutomacaoService {
 	
 	@Override
 	public AcaoDeAutomacao desacionarPor(Integer idDoDevice, Integer acionador) {
+
 		Device deviceEncontrado = buscarDevicePor(idDoDevice);
+
 		this.validarAcionadorPor(deviceEncontrado, acionador);
-		AcaoDeAutomacao ultimaAcao = getUltimaAcaoPor(deviceEncontrado, acionador);		
-		Preconditions.checkArgument(ultimaAcao.isAcionamento(), "O acionador já está desacionado");			
-		AcaoDeAutomacao novaAcao = new AcaoDeAutomacao(acionador, Status.DESACIONADO, deviceEncontrado);		
+
+		AcaoDeAutomacao ultimaAcao = repository.buscarUltimaAcaoPor(idDoDevice, acionador);
+
+		Preconditions.checkArgument(ultimaAcao != null && ultimaAcao.isAcionamento(), 
+				"O acionador já está desacionado");
+
+		AcaoDeAutomacao novaAcao = new AcaoDeAutomacao(acionador, Status.DESACIONADO, deviceEncontrado);
+
 		return repository.save(novaAcao);
+
 	}
 	
 	private void validarAcionadorPor(Device device, Integer acionador) {
