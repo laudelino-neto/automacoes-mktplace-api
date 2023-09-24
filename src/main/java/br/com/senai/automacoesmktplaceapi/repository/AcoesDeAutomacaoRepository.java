@@ -43,8 +43,8 @@ public interface AcoesDeAutomacaoRepository extends JpaRepository<AcaoDeAutomaca
 			+ "JOIN FETCH aa.device d "
 			+ "WHERE aa.id = (SELECT Max(aaAux.id) "
 			+ "                FROM AcaoDeAutomacao aaAux "
-			+ "                WHERE aa.device.id = :idDoDevice "			
-			+ "                AND aa.acionador = :acionador) ")
+			+ "                WHERE aaAux.device.id = :idDoDevice "			
+			+ "                AND aaAux.acionador = :acionador) ")
 	public AcaoDeAutomacao buscarUltimaAcaoPor(Integer idDoDevice, Integer acionador);
 	
 	@Query(value = 
